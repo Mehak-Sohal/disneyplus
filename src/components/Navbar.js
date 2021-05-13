@@ -39,16 +39,17 @@ const Navbar = () => {
 export default Navbar;
 
 const Container = styled.div`
-  height: 10vh;
+  height: 50px;
+  width: 100vw;
   display: flex;
   align-items: center;
   background-color: #000;
+  padding: 0 36px;
 `;
 
 const Logo = styled.img`
-  height: 6vh;
+  width: 50px;
   object-fit: contain;
-  margin: 0px 8px;
   cursor: pointer;
 `;
 
@@ -101,7 +102,8 @@ const Wrap = styled.div`
 `;
 
 const Avatar = styled.img`
-  height: 6vh;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   margin-right: 8px;
   cursor: pointer;
