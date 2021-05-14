@@ -1,15 +1,22 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <Container>
-      <Logo src="/images/logo.svg" alt="" />
+      <Link to="/">
+        <Logo src="/images/logo.svg" alt="" />
+      </Link>
+
       <NavItems>
-        <Wrap>
-          <img src="/images/home-icon.svg" alt="" />
-          <span>Home</span>
-        </Wrap>
+        <Link to="/" style={{ textDecoration: "none", color: "#f9f9f9" }}>
+          <Wrap>
+            <img src="/images/home-icon.svg" alt="" />
+            <span>Home</span>
+          </Wrap>
+        </Link>
+
         <Wrap>
           <img src="/images/search-icon.svg" alt="" />
           <span>Search</span>
