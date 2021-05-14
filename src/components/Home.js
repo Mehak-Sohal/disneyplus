@@ -2,12 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import CarouselSlider from "./CarouselSlider.js";
 import Channels from "./Channels.js";
+import Movies from "./Movies.js";
 
 const Home = () => {
   return (
     <Container>
       <CarouselSlider />
       <Channels />
+      <Movies />
     </Container>
   );
 };
