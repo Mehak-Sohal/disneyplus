@@ -1,51 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import styled from "styled-components";
+import db from "../firebase";
 
 const Detail = () => {
+  const { id } = useParams();
+  const [movie, setMovie] = useState();
+  useEffect(() => {
+    db.collection("movies")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          setMovie(doc.data());
+        } else {
+          //redirect to home page
+        }
+      });
+  }, [id]);
   return (
     <Container>
-      <BackgroundImage>
-        <img
-          src="https://www.denofgeek.com/wp-content/uploads/2019/07/the-flintstones.jpg?fit=1432%2C906"
-          alt=""
-        />
-      </BackgroundImage>
-      <TitleImage>
-        <img
-          src="https://i.pinimg.com/originals/3d/14/b2/3d14b28f0c5ecaeb6dac290ec2f3ad10.jpg"
-          alt=""
-        />
-      </TitleImage>
-      <Controls>
-        <PlayButton>
-          <img src="/images/play-icon-black.png" alt="" />
-          <span>PLAY</span>
-        </PlayButton>
-        <TrailerButton>
-          <img src="/images/play-icon-white.png" alt="" />
-          <span>Trailer</span>
-        </TrailerButton>
-        <AddButton>
-          <span>+</span>
-        </AddButton>
-        <GroupWatchButton>
-          <img src="/images/group-icon.png" alt="" />
-        </GroupWatchButton>
-      </Controls>
-      <SubTitle>
-        {" "}
-        hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb
-        hbdchsbcjhdsbhbdchsbcjhdsb
-      </SubTitle>
-      <Description>
-        hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb
-        hbdchsbcjhdsbhbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb
-        hbdchsbcjhdsb hbdchsbcjhdsbhbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb
-        hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsbhbdchsbcjhdsb hbdchsbcjhdsb
-        hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsbhbdchsbcjhdsb
-        hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb hbdchsbcjhdsb
-        hbdchsbcjhdsbhbdchsbcjhdsb
-      </Description>
+      {movie && (
+        <>
+          <BackgroundImage>
+            <img src={movie.backgroundImg} alt="" />
+          </BackgroundImage>
+          <TitleImage>
+            <img src={movie.titleImg} alt="" />
+          </TitleImage>
+          <Controls>
+            <PlayButton>
+              <img src="/images/play-icon-black.png" alt="" />
+              <span>PLAY</span>
+            </PlayButton>
+            <TrailerButton>
+              <img src="/images/play-icon-white.png" alt="" />
+              <span>Trailer</span>
+            </TrailerButton>
+            <AddButton>
+              <span>+</span>
+            </AddButton>
+            <GroupWatchButton>
+              <img src="/images/group-icon.png" alt="" />
+            </GroupWatchButton>
+          </Controls>
+          <SubTitle>{movie.subTitle}</SubTitle>
+          <Description>{movie.description}</Description>
+        </>
+      )}
     </Container>
   );
 };
@@ -65,7 +67,7 @@ const BackgroundImage = styled.div`
   bottom: 0;
   right: 0;
   z-index: -1;
-  opacity: 0.8;
+  opacity: 0.6;
 
   img {
     height: 100%;
@@ -82,7 +84,7 @@ const TitleImage = styled.div`
   img {
     height: 100%;
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 `;
 

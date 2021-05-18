@@ -2,18 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { selectMovies } from "../features/movie/movieSlice.js";
+import { Link } from "react-router-dom";
 
 const Movies = () => {
   const movies = useSelector(selectMovies);
-  console.log("movies", movies);
+  // console.log("movies", movies);
   return (
     <Container>
       <h4> Recommended for You</h4>
       <Content>
         {movies.map((movie) => (
-          <Wrap key={movie.id}>
-            <img src={movie.cardImg} alt={movie.title} />
-          </Wrap>
+          <Link to={`/detail/${movie.id}`} key={movie.id}>
+            <Wrap key={movie.id}>
+              <img src={movie.cardImg} alt={movie.title} />
+            </Wrap>
+          </Link>
         ))}
       </Content>
     </Container>
