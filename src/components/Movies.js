@@ -1,47 +1,20 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { selectMovies } from "../features/movie/movieSlice.js";
 
 const Movies = () => {
+  const movies = useSelector(selectMovies);
+  console.log("movies", movies);
   return (
     <Container>
       <h4> Recommended for You</h4>
       <Content>
-        <Wrap>
-          <img
-            src="https://yt3.ggpht.com/ytc/AAUvwnizY0dv80efccMA3OPWFU8gfBHoGA98Rvg9_xGrtg=s900-c-k-c0x00ffffff-no-rj"
-            alt=""
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://yt3.ggpht.com/ytc/AAUvwnizY0dv80efccMA3OPWFU8gfBHoGA98Rvg9_xGrtg=s900-c-k-c0x00ffffff-no-rj"
-            alt=""
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://yt3.ggpht.com/ytc/AAUvwnizY0dv80efccMA3OPWFU8gfBHoGA98Rvg9_xGrtg=s900-c-k-c0x00ffffff-no-rj"
-            alt=""
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://yt3.ggpht.com/ytc/AAUvwnizY0dv80efccMA3OPWFU8gfBHoGA98Rvg9_xGrtg=s900-c-k-c0x00ffffff-no-rj"
-            alt=""
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://yt3.ggpht.com/ytc/AAUvwnizY0dv80efccMA3OPWFU8gfBHoGA98Rvg9_xGrtg=s900-c-k-c0x00ffffff-no-rj"
-            alt=""
-          />
-        </Wrap>
-        <Wrap>
-          <img
-            src="https://yt3.ggpht.com/ytc/AAUvwnizY0dv80efccMA3OPWFU8gfBHoGA98Rvg9_xGrtg=s900-c-k-c0x00ffffff-no-rj"
-            alt=""
-          />
-        </Wrap>
+        {movies.map((movie) => (
+          <Wrap key={movie.id}>
+            <img src={movie.cardImg} alt={movie.title} />
+          </Wrap>
+        ))}
       </Content>
     </Container>
   );
