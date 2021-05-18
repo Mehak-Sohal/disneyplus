@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import db from "../firebase";
+import Youtube from "react-youtube";
+import movieTrailer from "movie-trailer";
 
 const Detail = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState();
+  const [trailerUrl, setTrailerUrl] = useState("");
+  const [error, setError] = useState("");
   useEffect(() => {
     db.collection("movies")
       .doc(id)
@@ -18,6 +22,32 @@ const Detail = () => {
         }
       });
   }, [id]);
+
+  const opts = {
+    height: "390",
+    width: "100%",
+    playerVars: {
+      autoplay: 1,
+    },
+  };
+
+  const playTrailer = (movie) => {
+    if (trailerUrl) {
+      setTrailerUrl("");
+    } else {
+      movieTrailer(movie?.title || movie?.description)
+        .then((url) => {
+          const urlParams = new URLSearchParams(new URL(url).search);
+          setTrailerUrl(urlParams.get("v"));
+        })
+        .catch((error) => setError("Sorry, No trailer found!"));
+    }
+  };
+
+  const closeError = () => {
+    setError("");
+  };
+
   return (
     <Container>
       {movie && (
@@ -33,7 +63,7 @@ const Detail = () => {
               <img src="/images/play-icon-black.png" alt="" />
               <span>PLAY</span>
             </PlayButton>
-            <TrailerButton>
+            <TrailerButton onClick={() => playTrailer(movie)}>
               <img src="/images/play-icon-white.png" alt="" />
               <span>Trailer</span>
             </TrailerButton>
@@ -44,10 +74,16 @@ const Detail = () => {
               <img src="/images/group-icon.png" alt="" />
             </GroupWatchButton>
           </Controls>
+          {error && (
+            <Error>
+              {error} <span onClick={closeError}>X</span>
+            </Error>
+          )}
           <SubTitle>{movie.subTitle}</SubTitle>
           <Description>{movie.description}</Description>
         </>
       )}
+      {trailerUrl && <Youtube videoId={trailerUrl} opts={opts} />}
     </Container>
   );
 };
@@ -153,4 +189,23 @@ const Description = styled.div`
   line-height: 1.4;
   margin-top: 16px;
   color: #f9f9f9;
+`;
+
+const Error = styled.div`
+  margin-top: 18px;
+  background-color: #cfcdcc;
+  color: red;
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    cursor: pointer;
+    border: 1px solid red;
+    border-radius: 4px;
+    background: red;
+    color: #f9f9f9;
+    padding: 0px 4px;
+  }
 `;
