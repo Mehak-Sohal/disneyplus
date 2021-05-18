@@ -1,44 +1,99 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { auth, provider } from "../firebase.js";
+import {
+  selectUserName,
+  selectUserPhoto,
+  setUserLogin,
+  setLogout,
+} from "../features/user/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const userName = useSelector(selectUserName);
+  const userPhoto = useSelector(selectUserPhoto);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        dispatch(
+          setUserLogin({
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+          })
+        );
+        history.push("/");
+      }
+    });
+  }, []);
+
+  const signIn = () => {
+    auth.signInWithPopup(provider).then((result) => {
+      let user = result.user;
+      dispatch(
+        setUserLogin({
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+        })
+      );
+      history.push("/");
+    });
+  };
+
+  const signOut = () => {
+    auth.signOut().then(() => {
+      dispatch(setLogout());
+      history.push("/login");
+    });
+  };
+
   return (
     <Container>
-      <Link to="/">
-        <Logo src="/images/logo.svg" alt="" />
-      </Link>
+      <Logo src="/images/logo.svg" alt="" />
 
-      <NavItems>
-        <Link to="/" style={{ textDecoration: "none", color: "#f9f9f9" }}>
-          <Wrap>
-            <img src="/images/home-icon.svg" alt="" />
-            <span>Home</span>
-          </Wrap>
-        </Link>
+      {!userName ? (
+        <LoginContainer>
+          <Login onClick={signIn}>Login</Login>
+        </LoginContainer>
+      ) : (
+        <>
+          <NavItems>
+            <Link to="/" style={{ textDecoration: "none", color: "#f9f9f9" }}>
+              <Wrap>
+                <img src="/images/home-icon.svg" alt="" />
+                <span>Home</span>
+              </Wrap>
+            </Link>
 
-        <Wrap>
-          <img src="/images/search-icon.svg" alt="" />
-          <span>Search</span>
-        </Wrap>
-        <Wrap>
-          <img src="/images/watchlist-icon.svg" alt="" />
-          <span>watchlist</span>
-        </Wrap>
-        <Wrap>
-          <img src="/images/original-icon.svg" alt="" />
-          <span>originals</span>
-        </Wrap>
-        <Wrap>
-          <img src="/images/movie-icon.svg" alt="" />
-          <span>movies</span>
-        </Wrap>
-        <Wrap>
-          <img src="/images/series-icon.svg" alt="" />
-          <span>series</span>
-        </Wrap>
-      </NavItems>
-      <Avatar src="/images/avatar-default.png" alt="" />
+            <Wrap>
+              <img src="/images/search-icon.svg" alt="" />
+              <span>Search</span>
+            </Wrap>
+            <Wrap>
+              <img src="/images/watchlist-icon.svg" alt="" />
+              <span>watchlist</span>
+            </Wrap>
+            <Wrap>
+              <img src="/images/original-icon.svg" alt="" />
+              <span>originals</span>
+            </Wrap>
+            <Wrap>
+              <img src="/images/movie-icon.svg" alt="" />
+              <span>movies</span>
+            </Wrap>
+            <Wrap>
+              <img src="/images/series-icon.svg" alt="" />
+              <span>series</span>
+            </Wrap>
+          </NavItems>
+          <Avatar onClick={signOut} src={userPhoto} alt="" />
+        </>
+      )}
     </Container>
   );
 };
@@ -58,6 +113,31 @@ const Logo = styled.img`
   width: 50px;
   object-fit: contain;
   cursor: pointer;
+`;
+
+const LoginContainer = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+`;
+
+const Login = styled.button`
+  border: 1px solid #f9f9f9;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #f9f9f9;
+  padding: 3px 8px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 250ms ease 0s;
+
+  &:hover {
+    background-color: #f9f9f9;
+    color: #000;
+    border-color: transparent;
+  }
 `;
 
 const NavItems = styled.div`
