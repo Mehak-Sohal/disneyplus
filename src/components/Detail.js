@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
 import db from "../firebase";
 import Youtube from "react-youtube";
 import movieTrailer from "movie-trailer";
 
 const Detail = () => {
+  const history = useHistory();
   const { id } = useParams();
   const [movie, setMovie] = useState();
   const [trailerUrl, setTrailerUrl] = useState("");
@@ -18,7 +19,7 @@ const Detail = () => {
         if (doc.exists) {
           setMovie(doc.data());
         } else {
-          //redirect to home page
+          history.push("/");
         }
       });
   }, [id]);

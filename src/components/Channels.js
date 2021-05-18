@@ -2,60 +2,44 @@ import React from "react";
 import styled from "styled-components";
 
 const Channels = () => {
+  const playVideo = (e) => {
+    e.preventDefault();
+    e.currentTarget.play();
+  };
+
+  const pauseVideo = (e) => {
+    e.preventDefault();
+    e.currentTarget.pause();
+  };
   return (
     <Container>
       <Content>
         <img src="/images/viewers-disney.png" alt="" />
-        <video
-          loop
-          muted
-          onMouseOver={(e) => e.currentTarget.play()}
-          onMouseOut={(e) => e.currentTarget.pause()}
-        >
+        <video loop muted onMouseOver={playVideo} onMouseOut={pauseVideo}>
           <source src="/videos/1564674844-disney.mp4" />
         </video>
       </Content>
       <Content>
         <img src="/images/viewers-marvel.png" alt="" />
-        <video
-          loop
-          muted
-          onMouseOver={(e) => e.currentTarget.play()}
-          onMouseOut={(e) => e.currentTarget.pause()}
-        >
+        <video loop muted onMouseOver={playVideo} onMouseOut={pauseVideo}>
           <source src="/videos/1564676115-marvel.mp4" />
         </video>
       </Content>
       <Content>
         <img src="/images/viewers-national.png" alt="" />
-        <video
-          loop
-          muted
-          onMouseOver={(e) => e.currentTarget.play()}
-          onMouseOut={(e) => e.currentTarget.pause()}
-        >
+        <video loop muted onMouseOver={playVideo} onMouseOut={pauseVideo}>
           <source src="/videos/1564676296-national-geographic.mp4" />
         </video>
       </Content>
       <Content>
         <img src="/images/viewers-pixar.png" alt="" />
-        <video
-          loop
-          muted
-          onMouseOver={(e) => e.currentTarget.play()}
-          onMouseOut={(e) => e.currentTarget.pause()}
-        >
+        <video loop muted onMouseOver={playVideo} onMouseOut={pauseVideo}>
           <source src="/videos/1564676714-pixar.mp4" />
         </video>
       </Content>
       <Content>
         <img src="/images/viewers-starwars.png" alt="" />
-        <video
-          loop
-          muted
-          onMouseOver={(e) => e.currentTarget.play()}
-          onMouseOut={(e) => e.currentTarget.pause()}
-        >
+        <video loop muted onMouseOver={playVideo} onMouseOut={pauseVideo}>
           <source src="/videos/1608229455-star-wars.mp4" />
         </video>
       </Content>
