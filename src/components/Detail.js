@@ -129,6 +129,12 @@ const TitleImage = styled.div`
 const Controls = styled.div`
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 375px) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-gap: 10px;
+  }
 `;
 
 const PlayButton = styled.div`

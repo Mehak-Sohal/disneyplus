@@ -26,7 +26,7 @@ const Navbar = () => {
             photo: user.photoURL,
           })
         );
-        history.push("/");
+        history.push("/home");
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,14 +42,14 @@ const Navbar = () => {
           photo: user.photoURL,
         })
       );
-      history.push("/");
+      history.push("/home");
     });
   };
 
   const signOut = () => {
     auth.signOut().then(() => {
       dispatch(setLogout());
-      history.push("/login");
+      history.push("/");
     });
   };
 
@@ -64,7 +64,10 @@ const Navbar = () => {
       ) : (
         <>
           <NavItems>
-            <Link to="/" style={{ textDecoration: "none", color: "#f9f9f9" }}>
+            <Link
+              to="/home"
+              style={{ textDecoration: "none", color: "#f9f9f9" }}
+            >
               <Wrap>
                 <img src="/images/home-icon.svg" alt="" />
                 <span>Home</span>
@@ -92,7 +95,9 @@ const Navbar = () => {
               <span>series</span>
             </Wrap>
           </NavItems>
-          <Avatar onClick={signOut} src={userPhoto} alt="" />
+          <AvatarContainer>
+            <Avatar onClick={signOut} src={userPhoto} title="SignOut" alt="" />
+          </AvatarContainer>
         </>
       )}
     </Container>
@@ -146,6 +151,11 @@ const NavItems = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
+
+  @media screen and (max-width: 375px) {
+    display: none;
+    flex: 0;
+  }
 `;
 
 const Wrap = styled.div`
@@ -195,4 +205,12 @@ const Avatar = styled.img`
   border-radius: 50%;
   margin-right: 8px;
   cursor: pointer;
+`;
+
+const AvatarContainer = styled.div`
+  @media screen and (max-width: 375px) {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+  }
 `;
